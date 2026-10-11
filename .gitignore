@@ -1,0 +1,20 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Secrets and server leftovers
+.env
+.env.*
+error_log
+*.log
+
+# Backups / archives
+*.zip
+*.bak
+*.old
+
+# If you add a build step later
+node_modules/

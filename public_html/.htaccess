@@ -1,0 +1,61 @@
+# odhranroche.com — Apache/LiteSpeed settings for Hostinger shared hosting.
+# Plain static site: no PHP, Node or Python needed.
+
+DirectoryIndex index.html
+AddDefaultCharset UTF-8
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Force HTTPS. If hPanel's "Force HTTPS" is already on, you can delete these two lines.
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Addresses from the old Website Builder site, sent to their new homes.
+  # (/qualifications and /references are real pages again, so the clean-address rule below handles them.)
+  RewriteRule ^portfolio/?$ /skills.html [R=301,L]
+  RewriteRule ^(findarescue|seogaeilgecom-archived|irelandsaysnoie-archived|animal-fostering)/?$ /projects.html [R=301,L]
+  RewriteRule ^(about-me|professional-experience|diversity-and-inclusion|blog|is-fostering-right-for-you)/?$ / [R=301,L]
+
+  # Drop a trailing slash on anything that isn't a folder (/cv/ -> /cv), so old links with a slash still work
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # Clean addresses: /cv shows cv.html, /skills shows skills.html, and so on
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+# Compress text files
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript image/svg+xml text/plain application/xml
+</IfModule>
+
+# Caching: pages always fresh, styles and scripts for a day, images and fonts for a month
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 day"
+  ExpiresByType application/javascript "access plus 1 day"
+  ExpiresByType text/javascript "access plus 1 day"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 week"
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/webp .webp
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
