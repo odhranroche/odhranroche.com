@@ -4,6 +4,9 @@ Source for [odhranroche.com](https://odhranroche.com), the personal portfolio si
 
 It is a plain static site. There is no build step, framework, PHP, Node or Python. What is in `public_html/` is exactly what gets served.
 
+![Screenshot of the odhranroche.com homepage](homepage_screenshot.png)
+
+
 ## Structure
 
 ```
