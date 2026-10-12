@@ -602,6 +602,17 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
 .frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .frames .shot figcaption { font-family: var(--f-display); font-weight: 500; color: var(--ink); }
 
+/* Slideshow: a deck shown one slide at a time, with Previous and Next buttons (site.js).
+   Without JavaScript every slide shows, one under another. Click a slide to enlarge it. */
+.slideshow { clear: both; display: grid; gap: var(--s-3); padding-top: var(--s-6); }
+.slideshow-title { font-family: var(--f-display); font-weight: 500; }
+.slides { display: grid; gap: var(--s-4); }
+.slide img { aspect-ratio: 16 / 9; }
+.slide[hidden] { display: none; }
+.slideshow-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.slideshow-controls[hidden] { display: none; }
+.slideshow-count { font-family: var(--f-display); font-size: var(--t-sm); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
 /* Image viewer (a native dialog) */
 .viewer { width: min(96vw, 1400px); max-height: 94vh; padding: 0; border: 0; background: transparent; color: var(--white); overflow: visible; }
 .viewer::backdrop { background: rgba(20, 31, 43, .95); backdrop-filter: blur(4px); }
@@ -778,6 +789,8 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
   .section, .skill-group { padding-block: 1rem; }
   .entries { gap: 1rem; }
   .entry, .skill, .quote { break-inside: avoid; }
+  .slideshow .slide[hidden] { display: grid !important; }
+  .slideshow-controls { display: none !important; }
   a { text-decoration: none; }
 }
 

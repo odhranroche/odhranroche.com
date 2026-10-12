@@ -116,6 +116,29 @@
     });
   }
 
+  // Slideshow: one slide at a time, moved with the Previous and Next buttons or the arrow keys.
+  // It loops at either end. Without JavaScript every slide shows and the buttons stay hidden.
+  document.querySelectorAll('.slideshow').forEach(function (show) {
+    var slides = show.querySelectorAll('.slide');
+    var controls = show.querySelector('.slideshow-controls');
+    var count = show.querySelector('.slideshow-count');
+    if (slides.length < 2 || !controls) { return; }
+    var current = 0;
+    var go = function (i) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach(function (s, n) { s.hidden = n !== current; });
+      if (count) { count.textContent = 'Slide ' + (current + 1) + ' of ' + slides.length; }
+    };
+    show.querySelector('[data-prev]').addEventListener('click', function () { go(current - 1); });
+    show.querySelector('[data-next]').addEventListener('click', function () { go(current + 1); });
+    show.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
+    });
+    controls.hidden = false;
+    go(0);
+  });
+
   // Experience menu: the button opens and closes it (CSS also opens it on mouse hover).
   // It closes on Escape, on a click outside it, and when keyboard focus leaves it.
   document.querySelectorAll('.nav-group').forEach(function (group) {
