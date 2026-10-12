@@ -597,6 +597,9 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
 .shot-crop { max-width: 26rem; }
 .skill-media:has(> .shot-crop:only-child) { width: min(46%, 26rem); }
 .shot-crop img { aspect-ratio: 4 / 5; object-fit: cover; object-position: top; }
+/* A single portrait document page, e.g. a booklet cover: kept narrow so it isn't blown up past its real size */
+.shot-page { max-width: 22rem; }
+.skill-media:has(> .shot-page:only-child) { width: min(46%, 22rem); }
 .media-note { font-size: var(--t-sm); color: var(--ink-soft); }
 .shots-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .frames { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
@@ -612,6 +615,34 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
 .slideshow-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .slideshow-controls[hidden] { display: none; }
 .slideshow-count { font-family: var(--f-display); font-size: var(--t-sm); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+/* Examples dropdown: a native details element, closed by default. Summary looks like a quiet button. */
+.examples { margin-top: var(--s-4); }
+.examples > summary {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  min-height: var(--tap); padding: 0 var(--s-4);
+  border: 2px solid var(--ink); border-radius: var(--r-md);
+  font-family: var(--f-display); font-size: var(--t-sm); font-weight: 500;
+  list-style: none; cursor: pointer;
+  transition: background-color var(--d-fast), border-color var(--d-fast);
+}
+.examples > summary::-webkit-details-marker { display: none; }
+.examples > summary:hover { background: var(--leaf-tint); border-color: var(--leaf-deep); }
+.examples > summary svg { width: .8em; height: .8em; flex: none; transition: transform var(--d-fast); }
+.examples[open] > summary svg { transform: rotate(180deg); }
+.examples > .did { margin-top: var(--s-4); }
+.skill-cta { margin-top: var(--s-5); }
+
+/* Case study page: an intro row, then one row per step. Words on the left, the slide on the right. */
+.case-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s-6) var(--s-7); align-items: start; padding-bottom: var(--s-7); }
+.case-intro .shot-page, .step .shot-page { justify-self: center; width: 100%; }
+.shot-excerpt { max-width: 36rem; justify-self: center; width: 100%; }
+.case-end { padding-top: var(--s-6); border-top: 1px solid var(--rule); }
+.step { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s-4) var(--s-7); align-items: start; padding-block: var(--s-7); border-top: 1px solid var(--rule); scroll-margin-top: 4rem; }
+.step-text { display: grid; gap: var(--s-3); max-width: var(--measure); }
+.step h2 { font-size: clamp(1.35rem, 1.1rem + .8vw, 1.6rem); font-weight: 600; letter-spacing: -0.02em; }
+.for-learners { color: var(--ink-soft); }
+.for-learners b { font-family: var(--f-display); font-weight: 500; color: var(--ink); }
 
 /* Image viewer (a native dialog) */
 .viewer { width: min(96vw, 1400px); max-height: 94vh; padding: 0; border: 0; background: transparent; color: var(--white); overflow: visible; }
@@ -744,6 +775,7 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
   .job .logo-tile { margin-top: 0; width: 9rem; flex: none; height: 3.6rem; }
   .job .title, .job .hand-note { margin-top: 0; }
   .project { grid-template-columns: minmax(0, 1fr); }
+  .case-intro, .step { grid-template-columns: minmax(0, 1fr); }
   .skill-map { grid-template-columns: minmax(0, 1fr); }
   .skill-media { float: none; width: auto; margin: var(--s-4) 0 var(--s-5); }
 }
