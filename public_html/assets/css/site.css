@@ -614,7 +614,7 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
 .slide[hidden] { display: none; }
 .slideshow-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .slideshow-controls[hidden] { display: none; }
-.slideshow-count { font-family: var(--f-display); font-size: var(--t-sm); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.slideshow-count { font-family: var(--f-display); font-size: var(--t-sm); color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* Examples dropdown: a native details element, closed by default. Summary looks like a quiet button. */
 .examples { margin-top: var(--s-4); }
@@ -652,6 +652,11 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
 .viewer p { max-width: 46rem; text-align: center; font-size: var(--t-sm); }
 .viewer .btn { justify-self: end; background: var(--paper); color: var(--ink); border-color: var(--paper); }
 .viewer .btn:hover { background: var(--leaf-tint); border-color: var(--leaf-tint); }
+.viewer-nav { display: flex; align-items: center; justify-content: center; gap: var(--s-4); }
+.viewer-nav[hidden] { display: none; }
+.viewer-nav .btn { justify-self: auto; }
+.viewer-count { font-family: var(--f-display); font-size: var(--t-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.viewer p:empty { display: none; }
 
 /* Plain list with sprout bullets */
 .sprout-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-2); }
@@ -687,6 +692,11 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
 .project-body { display: grid; gap: var(--s-4); max-width: var(--measure); }
 .project-body .link-row { margin-top: var(--s-1); }
 .project-body .did { margin-top: 0; }
+/* A slideshow in a project fills the whole right-hand column, so slide text stays as large as possible.
+   The description under it keeps the usual reading width. */
+.project-body:has(> .slideshow) { max-width: none; }
+.project-body:has(> .slideshow) > :not(.slideshow) { max-width: var(--measure); }
+.project-body > .slideshow { padding-top: 0; gap: var(--s-2); }
 .project-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
 .archived { margin-top: var(--s-2); font-family: var(--f-display); font-size: var(--t-sm); color: var(--ink-soft); }
 
@@ -792,6 +802,7 @@ main:has(> .hero:only-child) .hero .wrap { padding-block: clamp(2rem, 5vw, 4.5re
   .copy-email.contact-email { font-size: 1.3rem; padding: var(--s-3) var(--s-4); }
   .plot-training ul { grid-template-columns: minmax(0, 1fr); }
   .frames, .shots-2 { gap: var(--s-2); }
+  .slideshow-controls .btn { padding: 0 var(--s-4); }
   /* a two-row header shouldn't follow you down a phone screen; it still sits above the page so the menu isn't covered */
   .site-header { position: relative; top: auto; }
   .header-actions { width: 100%; justify-content: flex-end; gap: var(--s-3); }

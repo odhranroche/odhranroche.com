@@ -94,23 +94,48 @@
     var dlg = document.createElement('dialog');
     dlg.className = 'viewer';
     dlg.setAttribute('aria-label', 'Enlarged image');
-    dlg.innerHTML = '<div class="viewer-inner"><button class="btn" type="button">Close</button><img alt=""><p></p></div>';
+    // Slides from a slideshow also get Previous and Next buttons (and the arrow keys) in the viewer.
+    dlg.innerHTML = '<div class="viewer-inner"><button class="btn viewer-close" type="button">Close</button><img alt=""><p></p>' +
+      '<div class="viewer-nav" hidden><button class="btn" type="button" data-vprev>Previous<span class="visually-hidden"> slide</span></button>' +
+      '<span class="viewer-count" aria-live="polite"></span><button class="btn" type="button" data-vnext>Next<span class="visually-hidden"> slide</span></button></div></div>';
     document.body.appendChild(dlg);
     var big = dlg.querySelector('img');
     var cap = dlg.querySelector('p');
+    var nav = dlg.querySelector('.viewer-nav');
+    var vcount = dlg.querySelector('.viewer-count');
     var opener = null;
-    dlg.querySelector('button').addEventListener('click', function () { dlg.close(); });
+    var deck = null;
+    var showImage = function (a) {
+      opener = a;
+      var img = a.querySelector('img');
+      var fc = a.closest('figure') && a.closest('figure').querySelector('figcaption');
+      big.src = a.getAttribute('href');
+      big.alt = img ? img.alt : '';
+      cap.textContent = fc ? fc.textContent : '';
+      if (deck) { vcount.textContent = 'Slide ' + (deck.slideIndex() + 1) + ' of ' + deck.slideTotal; }
+    };
+    var step = function (by) {
+      if (!deck) { return; }
+      deck.slideGo(deck.slideIndex() + by);
+      var a = deck.querySelector('.slide:not([hidden]) a');
+      if (a) { showImage(a); }
+    };
+    dlg.querySelector('.viewer-close').addEventListener('click', function () { dlg.close(); });
+    dlg.querySelector('[data-vprev]').addEventListener('click', function () { step(-1); });
+    dlg.querySelector('[data-vnext]').addEventListener('click', function () { step(1); });
+    dlg.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+    });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) { dlg.close(); } });
     dlg.addEventListener('close', function () { if (opener) { opener.focus(); } });
     shots.forEach(function (a) {
       a.addEventListener('click', function (e) {
         e.preventDefault();
-        opener = a;
-        var img = a.querySelector('img');
-        var fc = a.closest('figure') && a.closest('figure').querySelector('figcaption');
-        big.src = a.getAttribute('href');
-        big.alt = img ? img.alt : '';
-        cap.textContent = fc ? fc.textContent : '';
+        var d = a.closest('.slideshow');
+        deck = d && d.slideGo ? d : null;
+        nav.hidden = !deck;
+        showImage(a);
         dlg.showModal();
       });
     });
@@ -135,6 +160,10 @@
       if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
       if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
     });
+    // Let the image viewer move through this slideshow too.
+    show.slideGo = go;
+    show.slideIndex = function () { return current; };
+    show.slideTotal = slides.length;
     controls.hidden = false;
     go(0);
   });
